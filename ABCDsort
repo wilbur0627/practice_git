@@ -1,0 +1,22 @@
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+public class TEST05ABCD {//ABCD 排列組合 要"由小到大" 排列
+
+	public static void main(String[] args) {
+		String s[] = {"A", "B", "C", "D"};
+		String result = "";
+		for(int i = s.length; i > 0; i--) {
+			for(int j = s.length-i; j < s.length; j++) {
+				result = result + s[j];
+				System.out.println(result);
+			}
+			result = "";
+		}
+	    
+	}
+
+}
