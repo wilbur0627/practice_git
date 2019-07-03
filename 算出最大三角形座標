@@ -1,0 +1,45 @@
+public class 三角形座標 {//給多個座標 算出最大周長三角形 回傳座標	
+	//d = Math.sqrt((x1-x2)*(y1-y2))
+
+	public static void main(String[] args) {
+		int[] x = {0,0,4,6,9,5,7,10};
+		double P1P2 = Math.sqrt(Math.pow(x[0]-x[2], 2)+Math.pow(x[1]-x[3], 2));
+		double P1P3 = Math.sqrt(Math.pow(x[0]-x[4], 2)+Math.pow(x[1]-x[5], 2));
+		double P1P4 = Math.sqrt(Math.pow(x[0]-x[6], 2)+Math.pow(x[1]-x[7], 2));
+		double P2P3 = Math.sqrt(Math.pow(x[2]-x[4], 2)+Math.pow(x[3]-x[5], 2));
+		double P2P4 = Math.sqrt(Math.pow(x[2]-x[6], 2)+Math.pow(x[3]-x[7], 2));
+		double P3P4 = Math.sqrt(Math.pow(x[4]-x[6], 2)+Math.pow(x[5]-x[7], 2));
+		
+		double first  = P1P2 + P1P3 + P2P3;
+		System.out.println(first);
+		double second = P1P2 + P1P4 + P2P4;
+		System.out.println(second);
+		double third  = P1P3 + P1P4 + P3P4;
+		System.out.println(third);
+		double forth  = P2P3 + P2P4 + P3P4;
+		System.out.println(forth);
+		
+		double[] z = new double[4];
+		z[0] = first; z[1] = second; z[2] = third; z[3] = forth;
+		double max = 0;
+		for(int i = 0; i < z.length-1; i++) {
+			if(z[i] > z[i+1]) {
+				max = z[i];
+			} else {
+				max = z[i+1];
+			}
+		}
+		for(int i = 0; i < 1; i++) {
+			if(max == first) {
+				System.out.println("x[" + x[i] + "," + x[i+1] + "," + x[i+2] + "," + x[i+3] + "," + x[i+4] + "," + x[i+5] + "]");
+			} else if(max == second) {
+				System.out.println("x[" + x[i] + "," + x[i+1] + "," + x[i+2] + "," + x[i+3] + "," + x[i+6] + "," + x[i+7] + "]");
+			} else if(max == third) {
+				System.out.println("x[" + x[i] + "," + x[i+1] + "," + x[i+4] + "," + x[i+5] + "," + x[i+6] + "," + x[i+7] + "]");
+			} else if(max == forth) {
+				System.out.println("x[" + x[i+1] + "," + x[i+2] + "," + x[i+4] + "," + i+5 + "," + x[i+6] + "," + x[i+7] + "]");
+			}
+		}
+	}
+
+}
