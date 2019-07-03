@@ -1,0 +1,95 @@
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
+
+public class Message extends JFrame implements ActionListener {//畫圖物件是JFrame的擴充
+    Container c;
+    JButton rot0,rot1;
+    JLabel lab1 = new JLabel("顯示模式");
+    JTextArea text_s = new JTextArea(20,40);
+    JScrollPane jsp1 = new JScrollPane(text_s);//為JTextArea裝設捲動軸
+    String str,str_bak;//str是剛剛輸入的留言 str_bak是以前的留言
+    int mode = 0;
+    public Message() {//建構元
+        super("留言板");
+        /***安置UI元件***/
+        c = getContentPane();
+        rot1 = new JButton("輸入");
+        rot0 = new JButton("結束");
+        setSize(500,500);
+        c.setLayout(new FlowLayout(FlowLayout.CENTER));
+        c.add(lab1);
+        c.add(jsp1);//加進捲動Pane而不是JTextArea
+        c.add(rot1);
+        c.add(rot0);
+        text_s.setEditable(false);//顯示用，不能輸入
+        //安置Listener
+        rot0.addActionListener(this);
+        rot1.addActionListener(this);
+        /** 讀取檔案 **/
+        try {
+            FileReader fr = new FileReader("g_book.txt");
+            BufferedReader bfr = new BufferedReader(fr);
+            while ((str = bfr.readLine()) != null)
+                text_s.append(str+"\r\n");
+            str_bak = text_s.getText();
+            fr.close();
+        }
+         catch(IOException e1) //如果沒讀到
+        {
+            str_bak = new String("");  
+        }
+        show();
+    }
+    public void paint(Graphics g) {//真正的畫圖設定
+        g.setFont(new Font("Serif",Font.PLAIN,20));//設定字形大小與背景顏色
+        g.setColor(Color.red);
+        super.paint(g);
+    }
+   public void actionPerformed(ActionEvent e) { //處理button事件
+	   int x,y,k;
+       byte tmp;
+       Date today = new Date();
+       if (e.getSource() == rot0) {//結束
+             System.exit(0);
+         }
+         /***透過檢查那個按鈕呼叫的，就可以判定該做的動作 ***/
+        if (e.getSource() == rot1 && mode == 0) {//輸入
+             text_s.setEditable(true);//允許輸入
+             text_s.setText("");//清空輸入區
+             lab1.setText("輸入模式");
+             rot1.setText("新增");
+             mode = 1;
+        }
+        else if  (e.getSource() == rot1 && mode == 1)/*新增*/ {//寫入檔案
+            try {
+                FileWriter fw = new FileWriter("g_book.txt");
+                BufferedWriter bfw = new BufferedWriter(fw);
+                str = today.toString()+"\r\n====================================\r\n"
+                    +text_s.getText()+"\r\n";
+                bfw.write(str,0,str.length());
+                bfw.write(str_bak,0,str_bak.length());
+                bfw.flush();
+                fw.close();
+                text_s.setText(str+str_bak);//不讀檔，直接算出目前的顯示狀況
+                str_bak = text_s.getText();
+            }
+             catch(IOException e1) {
+                 System.out.println("g_book.txt Open Error!");
+             }
+             lab1.setText("顯示模式");
+             rot1.setText("輸入");
+             mode = 0;
+        }
+        repaint(); //重新顯示一次
+     }
+    public static void main(String args[]) {//程式起點
+        Message app = new Message(); //畫圖
+        app.addWindowListener(new WindowAdapter(){ //匿名內部類別
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }}); //處理視窗關閉要求
+    }
+}
