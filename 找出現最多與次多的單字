@@ -1,0 +1,46 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+public class 最多和次多 {//給一文章 列出出現次數最多和次多的單字
+
+	public static void main(String[] args) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+
+		String s = "a a a b b b c c d d d d";
+		String[] word = s.split(" ");
+		int max = 0;	//裝最大的值
+		int secmax = 0;	//裝第二大的值
+		
+		for(int i = 0; i < word.length; i++) {
+			if(!map.containsKey(word[i])) {
+				map.put(word[i], 1);
+			} else {
+				map.put(word[i], map.get(word[i])+1);
+			}
+		}
+		//找最大
+		for(int i = 0; i < word.length; i++) {
+			if(map.get(word[i]) > max) {
+				max = map.get(word[i]);
+			}
+		}
+		//找第二大
+		for(int i = 0; i < word.length; i++) {
+			if(secmax < map.get(word[i]) && map.get(word[i]) < max) {
+				secmax = map.get(word[i]);
+			}
+		}
+		//列印
+		for(Object key : map.keySet()) {
+			if(map.get(key) == max)
+			System.out.println(key + "(" + map.get(key) + ")");
+			if(map.get(key) == secmax)
+				System.out.println(key + "(" + map.get(key) + ")");
+		}
+	}
+}
