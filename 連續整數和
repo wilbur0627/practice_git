@@ -1,0 +1,39 @@
+public class 連續整數和 {//給一整數n 列出數字最多連續整數和
+
+	public static String add(int j, int i) {//加字串
+		String tmp = "";
+		if(j == i) {
+			tmp = String.valueOf(i);
+		} else {
+			tmp = add(j-1,i) + "+" + j;
+		}
+		return tmp;
+	}
+	
+	public static int Rec(int n, int i) {//遞迴
+		if(n == i) {
+			return i;
+		} else {
+			return n + Rec(n-1,i);
+		}
+	}
+
+	public static void main(String[] args) {
+		int num = 12345;
+		int sum = 0;
+		labA : 
+		for(int i = 1; i < num; i++) {
+			for(int j = i+1; j < num; j++) {
+				sum = Rec(j,i);
+				if(sum > num) {
+					break;
+				}
+				if(sum == num) {
+					System.out.println(sum + "=" + add(j,i));
+					break labA;
+				}
+			}
+		}
+	}
+
+}
